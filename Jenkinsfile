@@ -29,4 +29,4 @@ stages {
                 echo 'Running docker rmi..'
             }
         }
-    }
+}
