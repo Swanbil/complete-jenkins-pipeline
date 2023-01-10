@@ -1,41 +1,27 @@
-pipeline{
-    agent any
-    stages {
-        stage('Init') {
-            steps {
-                echo 'Initializing..'
-                echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
-            }
+node {
+    def app
+
+    stage('Clone repository') {
+        /* Let's make sure we have the repository cloned to our workspace */
+
+        checkout scm
+    }
+
+    stage('Build image') {
+        /* This builds the actual image; synonymous to
+         * docker build on the command line */
+
+        app = docker.build("swaninho/node-web-app")
+    }
+
+    stage('Push image') {
+        /* Finally, we'll push the image with two tags:
+         * First, the incremental build number from Jenkins
+         * Second, the 'latest' tag.
+         * Pushing multiple tags is cheap, as all the layers are reused. */
+        docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+            app.push("${env.BUILD_NUMBER}")
+            app.push("latest")
         }
-        stage('Unit tests') {
-            steps {
-                echo 'Testing..'
-                echo 'Running pytest..'
-            }
-        }
-        stage('Build docker image') {
-            steps {
-                echo 'Building..'
-                echo 'Running docker build -t sntshk/cotu .'
-            }
-        }
-        stage('Publish image to docker hub') {
-            steps {
-                echo 'Publishing..'
-                echo 'Running docker push..'
-            }
-        }
-        stage('Deployment PREPROD env') {
-            steps {
-                echo 'Cleaning..'
-                echo 'Running docker rmi..'
-            }
-        }
-        stage('Deployment PROD env') {
-            steps {
-                echo 'Cleaning..'
-                echo 'Running docker rmi..'
-            }
-        }
-}
+    }
 }
