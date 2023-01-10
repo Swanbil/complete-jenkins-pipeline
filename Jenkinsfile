@@ -5,15 +5,27 @@ pipeline {
     dockerImage = ''
   }
   agent any
+  tools {nodejs "NodeJs"}
   stages {
-    stage('Building image') {
+    stage('Install dependencies of the app') {
+      steps {
+        sh 'npm install'
+      }
+    }
+     
+    stage('Test the app') {
+      steps {
+        sh 'npm run test'
+      }
+    }   
+    stage('Building Docker image') {
       steps{
         script {
           dockerImage = docker.build registry + ":$BUILD_NUMBER"
         }
       }
     }
-    stage('Deploy Image') {
+    stage('Deploy Docker image') {
       steps{
         script {
           docker.withRegistry( '', registryCredential ) {
