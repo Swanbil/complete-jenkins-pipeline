@@ -1,11 +1,13 @@
-var http = require('http');
+const express = require("express")
+const app = express()
 
-// configure our HTTP server
-var server = http.createServer(function (request, response) {
-  response.writeHead(200, {"Content-Type": "text/plain"});
-  response.end("Simple testing server\n");
-});
+app.get('/', (req, res) => {
+    res.status(200).json({message : 'Welcome to express'});
+})
 
-// listen on localhost:8000
-server.listen(8000);
-console.log("Server listening at http://127.0.0.1:8000/");
+app.get('/test', (req, res) => {
+    res.status(200).json({message : 'Test'});
+})
+app.listen(3000, () => console.log("Listening at port 3000"))
+
+module.exports = app;
