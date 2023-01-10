@@ -1,4 +1,6 @@
-stages {
+pipeline{
+    agent any
+    stages {
         stage('Init') {
             steps {
                 echo 'Initializing..'
@@ -29,4 +31,5 @@ stages {
                 echo 'Running docker rmi..'
             }
         }
+}
 }
