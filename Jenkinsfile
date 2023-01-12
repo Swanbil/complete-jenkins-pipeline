@@ -47,7 +47,7 @@ pipeline {
         steps{
           script {
           docker.withRegistry( '', registryCredential ) {
-            image = docker.image('swaninho/node-web-app:'+ $BUILD_NUMBER)
+            image = docker.image('swaninho/node-web-app:16')
             image.pull()
             image.run('PREPROD-node-web-app')
           }
