@@ -43,7 +43,6 @@ pipeline {
         }
       }
     }
-    //Run the docker container
      stage('Deploy to PREPROD'){
         steps{
           sh 'deploy to PREPROD'
