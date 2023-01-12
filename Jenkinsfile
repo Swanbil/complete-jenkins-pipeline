@@ -43,16 +43,26 @@ pipeline {
         }
       }
     }
-     stage('Deploy to PREPROD'){
+    stage('Deploy to PREPROD'){
         steps{
           script {
-          docker.withRegistry( '', registryCredential ) {
-            image = docker.image('swaninho/node-web-app:16')
-            image.run()
+          dockerImage.inside{
+            sh 'echo PREPROD ENV'
+            sh 'npm run start'
           }
         }
       }
     }
+    // stage('Deploy to PROD'){
+    //     steps{
+    //       script {
+    //       dockerImage.inside{
+    //         sh 'echo PROD ENV'
+    //         sh 'npm run start'
+    //       }
+    //     }
+    //   }
+    // }
     
   }
 }
