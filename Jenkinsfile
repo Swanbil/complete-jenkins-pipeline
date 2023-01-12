@@ -45,12 +45,13 @@ pipeline {
     }
      stage('Deploy to PREPROD'){
         steps{
-          sh 'deploy to PREPROD'
-      }
-    }
-     stage('Deploy to PROD'){
-        steps{
-        sh 'deploy to PROD'
+          script {
+          docker.withRegistry( '', registryCredential ) {
+            image = docker.image('swaninho/node-web-app:latest')
+            image.pull()
+            image.run('PREPROD-node-web-app')
+          }
+        }
       }
     }
     
