@@ -45,12 +45,16 @@ pipeline {
     }
     stage('Deploy to PREPROD'){
         steps{
-          dockerImage.run('--name preprod -p 3001:3001') 
+          script{
+            dockerImage.run('--name preprod -p 3001:3001') 
+          }
       }
     }
      stage('Deploy to PROD'){
         steps{
-          dockerImage.run('--name prod -p 3000:3000') 
+          script{
+            dockerImage.run('--name prod -p 3000:3000') 
+          }
       }
     }
   }
