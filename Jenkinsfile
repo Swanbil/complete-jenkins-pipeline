@@ -45,24 +45,13 @@ pipeline {
     }
     stage('Deploy to PREPROD'){
         steps{
-          script {
-          dockerImage.inside{
-            sh 'echo PREPROD ENV'
-            sh 'npm run start'
-          }
-        }
+          dockerImage.run('--name preprod -p 3001:3001') 
       }
     }
-    // stage('Deploy to PROD'){
-    //     steps{
-    //       script {
-    //       dockerImage.inside{
-    //         sh 'echo PROD ENV'
-    //         sh 'npm run start'
-    //       }
-    //     }
-    //   }
-    // }
-    
+     stage('Deploy to PROD'){
+        steps{
+          dockerImage.run('--name prod -p 3000:3000') 
+      }
+    }
   }
 }
